@@ -23,6 +23,14 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
+	/**  Jesse Defined path for login redirection,
+	 *   should be '/' for homepage :)
+	 *
+	 */
+
+	protected $redirectPath = '/projects';
+
+
     /**
      * Create a new authentication controller instance.
      *
