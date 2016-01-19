@@ -6,18 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Auth;
-use App\User;
-use App\Project;
 use App\Server;
 
-class ProjectController extends Controller
+class ServerController extends Controller
 {
-	public function home()
-	{
-		return view('home', ['users' => User::all()]);
-	}
-
     /**
      * Display a listing of the resource.
      *
@@ -25,12 +17,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-	    $user = Auth::user();
-
-	    $projects = $user->projects;
-	    //$all = Project::all();
-	    //dd($projects);
-        return view('projects', ['projects' => $projects, 'user' => $user]);
+        //
     }
 
     /**
@@ -51,17 +38,23 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-	    $user = Auth::user();
 
-	    $project = new Project;
-	    $project->name = $request->input('name');
-	    $project->repository = $request->input('repo');
-	    $project->user_id = $user->id;
+	    $server = new Server;
+	    $server->project_id = $request->input('project_id');
+	    $server->name = $request->input('name');
+	    $server->ip = $request->input('ip');
+	    $server->server_user = $request->input('user');
+	    $server->path = $request->input('path');
+	    $server->connection_status = "Unknown";
 
-	    $project->save();
+	    $checked = (null !== $request->input('receives'));
+
+	    $server->receives_code = $checked;
+
+	    $server->save();
 
 
-	    return redirect()->action('ProjectController@index');
+	    return redirect()->action('ProjectController@show',['id' => $server->project_id]);
     }
 
     /**
@@ -72,13 +65,7 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        $project = Project::find($id);
-	    //exec('cd .. ; /home/vagrant/.composer/vendor/bin/envoy run deploy', $res, $ret);
-
-	    $servers = $project->servers()->simplePaginate(15);
-	    $deployments = $project->deployments()->simplePaginate(15);
-	    return view('project', ['project' => $project,
-		    'servers' => $servers, 'deployments' => $deployments]);
+        //
     }
 
     /**
@@ -101,15 +88,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-	    $project = Project::find($id);
-	    $project->name = $request->input('name');
-	    $project->repository = $request->input('repo');
-
-	    $project->save();
-
-	    return redirect()->action('ProjectController@show',['id' => $id]);
-
+        //
     }
 
     /**

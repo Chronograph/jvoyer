@@ -19,7 +19,9 @@ class CreateServersTable extends Migration
 	        $table->string('name');
 	        $table->string('ip');
 	        $table->string('server_user');
+	        $table->string('connection_status');
 	        $table->string('path');
+	        $table->boolean('receives_code');
             $table->timestamps();
         });
     }

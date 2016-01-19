@@ -10,12 +10,17 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
+//homescreen temporary?
 Route::get('/', 'ProjectController@home');
 
+//project routes
 Route::get('projects', 'ProjectController@index');
 Route::post('projects', 'ProjectController@store');
 Route::get('projects/{id}','ProjectController@show');
+Route::post('projects/update/{id}','ProjectController@update');
+
+//Server routes
+Route::post('servers', 'ServerController@store');
 
 
 // Authentication routes...

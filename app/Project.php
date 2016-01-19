@@ -17,4 +17,10 @@ class Project extends Model
 		return $this->hasMany('App\Server');
 	}
 
+	public function deployments(){
+		return $this->hasMany('App\Deployment');
+	}
+
+
+
 }

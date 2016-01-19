@@ -1,0 +1,19 @@
+body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+
+button.header3-button {
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+button.header4-button {
+    margin-top: 10px;
+    margin-right: 10px;
+}

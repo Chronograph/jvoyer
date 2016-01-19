@@ -5,8 +5,9 @@
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
             <!-- Font just incase? -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Noticia+Text" rel="stylesheet" type="text/css">
+    <link href="../css/custom.css" rel="stylesheet">
     <title> Envoyer @yield('title')</title>
     @yield('styles')
 </head>
@@ -34,6 +35,9 @@
 
                     <li class="{{ (Request::is('/') ? 'active' : '') }}">
                         <a href="{{URL::to('/') }}"><i class="glyphicon glyphicon-home"></i> Home </a>
+                    </li>
+                    <li class="{{ (Request::is('projects*') ? 'active' : '') }}">
+                        <a href="{{URL::to('projects') }}"><i class="fa fa-folder-open"></i> Projects </a>
                     </li>
                     <li class="dropdown">
                     </li>
