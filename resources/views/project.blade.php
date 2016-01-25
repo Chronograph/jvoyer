@@ -3,76 +3,108 @@
 
 @section('title', ' | Home')
 
+@section('nav2')
+        <!-- second nav for specific page -->
+<nav class="navbar navbar-default navbar-static-top pad-sides">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#my-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <h3 class="navbar-text"> {{ $project->name }} </h3>
 
 
-
-@section('content')
-    <div class="row">
-        <div class="col-md-3">
-            <h3>{{ $project->name }}</h3>
         </div>
-        <div class="col-md-3 col-md-offset-6">
-            @if($servers->count() > 0)
-                <button class="btn btn-success pull-right header3-button"><span class="fa fa-cloud-download" aria-hidden="true"></span> Deploy</button>
 
-            @endif
-            <button class="btn btn-primary pull-right header3-button" data-toggle="modal" data-target="#project-edit-modal"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</button>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="my-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+
+
+                <!--   <li class="{{ (Request::is('/') ? 'active' : '') }}">
+                    <a href="{{URL::to('/') }}"><i class="glyphicon glyphicon-home"></i> Home </a>
+                </li>
+                <li class="{{ (Request::is('projects*') ? 'active' : '') }}">
+                    <a href="{{URL::to('projects') }}"><i class="fa fa-folder-open"></i> Projects </a>
+                </li> -->
+                <li class="dropdown">
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <button class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#project-edit-modal"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</button>
+
+                @if($servers->count() > 0)
+                    <button class="btn btn-success navbar-btn"><span class="fa fa-cloud-download" aria-hidden="true"></span> Deploy</button>
+                @endif
+
+            </ul>
+
         </div>
     </div>
+</nav>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-5 col-md-offset-2">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><strong>Project Details</strong></h3>
-                        </div>
-                        <table class="table">
-                            <tbody>
-                            <tr>
-                                <td>Repository</td>
-                                <td align="right">{{ $project->repository }}</td>
-                            </tr>
-                            <tr>
-                                <td>Deploy Branch</td>
-                                <td align="right"> <span class="label label-default">master</span> </td>
-                            </tr>
-                            <tr>
-                                <td>Health Check URL</td>
-                                <td align="right"> {{ $res . '|||' . $ret}}</td>
+@endsection
 
-                            </tr>
-                            </tbody>
-                        </table>
-
+@section('content')
+    <div class="container add-low-margin">
+        <div class="row">
+            <div class="col-md-5 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Project Details</strong></h3>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><strong>Deployments</strong></h3>
-                        </div>
-                        <table class="table">
-                            <tbody>
-                            <tr>
-                                <td>Today's</td>
-                                <td align="right">0</td>
-                            </tr>
-                            <tr>
-                                <td>This Week</td>
-                                <td align="right"> 0</td>
-                            </tr>
-                            <tr>
-                                <td>Last Duration</td>
-                                <td align="right"> N/A </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>Repository</td>
+                            <td align="right">{{ $project->repository }}</td>
+                        </tr>
+                        <tr>
+                            <td>Deploy Branch</td>
+                            <td align="right"> <span class="label label-default">master</span> </td>
+                        </tr>
+                        <tr>
+                            <td>Health Check URL</td>
+                            <td align="right">aaa</td>
 
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Deployments</strong></h3>
+                    </div>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>Today's</td>
+                            <td align="right">0</td>
+                        </tr>
+                        <tr>
+                            <td>This Week</td>
+                            <td align="right"> 0</td>
+                        </tr>
+                        <tr>
+                            <td>Last Duration</td>
+                            <td align="right"> N/A </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
+    </div>
 
     <div>
 
@@ -89,7 +121,7 @@
         <!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="deployments">
-                <div class="container-fluid">
+                <div class="container-fluid white bottom-border-curved">
                     <div class="row">
                         <div class="col-md-5">
                             <h4> Recent Deployments </h4>
@@ -127,7 +159,7 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="servers">
-                <div class="container-fluid">
+                <div class="container-fluid white bottom-border-curved">
                     <div class="row">
                         <div class="col-md-2">
                             <h4> Servers </h4>

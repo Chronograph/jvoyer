@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../js/sweetalert.css" type="text/css" rel="stylesheet">
             <!-- Font just incase? -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Noticia+Text" rel="stylesheet" type="text/css">
@@ -13,8 +14,9 @@
 </head>
 
 <body >
-<div class="container">
-    <nav class="navbar navbar-default">
+
+    <!-- first nav -->
+    <nav class="navbar navbar-default navbar-static-top no-nav-margin pad-sides no-border">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -24,6 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <a class="navbar-brand" href="{{URL::to('/') }}">Jvoyer!</a>
 
 
             </div>
@@ -33,9 +36,6 @@
                 <ul class="nav navbar-nav">
 
 
-                    <li class="{{ (Request::is('/') ? 'active' : '') }}">
-                        <a href="{{URL::to('/') }}"><i class="glyphicon glyphicon-home"></i> Home </a>
-                    </li>
                     <li class="{{ (Request::is('projects*') ? 'active' : '') }}">
                         <a href="{{URL::to('projects') }}"><i class="fa fa-folder-open"></i> Projects </a>
                     </li>
@@ -56,9 +56,8 @@
             </div>
         </div>
     </nav>
-</div>
 
-
+    @yield('nav2')
 
 
 
@@ -75,7 +74,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">Login to UA Envoyer</h4>
+                <h4 class="modal-title" id="myModalLabel">Login to J-voyer</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -126,13 +125,12 @@
 </div>
 
 
-
 <!-- JQuery -->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
-
+<script src="../js/sweetalert.min.js"></script>
 @yield('scripts')
 
 </body>

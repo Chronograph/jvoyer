@@ -1,19 +1,48 @@
 body {
-    padding-top: 20px;
     padding-bottom: 20px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: 'Noticia Text', serif, Arial;
     font-size: 14px;
     line-height: 1.42857143;
     color: #333;
     background-color: #fff;
+    background: url('../img/footer_lodyas.png');
 }
 
-button.header3-button {
-    margin-top: 20px;
+ul.right-margin {
     margin-right: 10px;
 }
 
 button.header4-button {
     margin-top: 10px;
     margin-right: 10px;
+}
+
+.no-nav-margin {
+    margin: 0;
+}
+
+.pad-sides {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.add-low-margin{
+    margin-bottom: 20px;
+}
+
+.my-well{
+    color: #f8f8f8;
+}
+
+.no-border{
+    border: 0px;
+}
+
+.white{
+    background-color: #fff;
+}
+
+.bottom-border-curved{
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
