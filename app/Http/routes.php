@@ -19,6 +19,9 @@ Route::post('projects', 'ProjectController@store');
 Route::get('projects/{id}','ProjectController@show');
 Route::post('projects/update/{id}','ProjectController@update');
 
+Route::get('deploy', 'ProjectController@deployProject');
+Route::post('deploy', 'ProjectController@deployProjectpost');
+
 //Server routes
 Route::post('servers', 'ServerController@store');
 

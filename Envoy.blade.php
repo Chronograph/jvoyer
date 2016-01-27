@@ -1,7 +1,8 @@
-@servers(['web' => 'root@104.131.166.73'])
+@servers(['web' => $user . '@' . $ip])
+<?php //$user . '@' . domain ?>
 
 @task('deploy')
-    cd /home/jesse
-    mkdir jessejessejesse
+    cd {{ $path }}
+    if [ ! -d releases ]; then mkdir releases; fi
     echo 'blah'
 @endtask

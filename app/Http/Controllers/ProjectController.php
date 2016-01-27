@@ -10,6 +10,8 @@ use Auth;
 use App\User;
 use App\Project;
 use App\Server;
+use App\Jobs\DeployJob;
+use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -43,6 +45,27 @@ class ProjectController extends Controller
         //
     }
 
+	public function deployProject(){
+		$this->dispatch(new DeployJob());
+		return('OK!');
+
+	}
+
+	public function deployProjectpost(Request $request){
+		//dd($request);
+		//middleware check if user matches with project + server
+		$user = Auth::user();
+		$project = Project::find($request->input('project_id'));
+		$server_ids = $request->input('server_ids');
+		for($i = 0; $i < sizeof($server_ids) ; $i++){
+			$server = Server::find($server_ids[$i]);
+			$this->dispatch(new DeployJob($project, $server));
+		}
+
+		return('OK!');
+
+	}
+
     /**
      * Store a newly created resource in storage.
      *
@@ -72,13 +95,17 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
+
+		$day = new Carbon();
+	    $day = $day->format("YmdHis");
         $project = Project::find($id);
 	    //exec('cd .. ; /home/vagrant/.composer/vendor/bin/envoy run deploy', $res, $ret);
 
 	    $servers = $project->servers()->simplePaginate(15);
 	    $deployments = $project->deployments()->simplePaginate(15);
 	    return view('project', ['project' => $project,
-		    'servers' => $servers, 'deployments' => $deployments]);
+		    'servers' => $servers, 'deployments' => $deployments,
+	        'day' => $day]);
     }
 
     /**

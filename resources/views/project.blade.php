@@ -25,12 +25,7 @@
             <ul class="nav navbar-nav">
 
 
-                <!--   <li class="{{ (Request::is('/') ? 'active' : '') }}">
-                    <a href="{{URL::to('/') }}"><i class="glyphicon glyphicon-home"></i> Home </a>
-                </li>
-                <li class="{{ (Request::is('projects*') ? 'active' : '') }}">
-                    <a href="{{URL::to('projects') }}"><i class="fa fa-folder-open"></i> Projects </a>
-                </li> -->
+
                 <li class="dropdown">
                 </li>
             </ul>
@@ -40,7 +35,8 @@
                 <button class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#project-edit-modal"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</button>
 
                 @if($servers->count() > 0)
-                    <button class="btn btn-success navbar-btn"><span class="fa fa-cloud-download" aria-hidden="true"></span> Deploy</button>
+
+                    <button id="deploy-btn" class="btn btn-success navbar-btn"><i class="fa fa-cloud-download" aria-hidden="true"></i> Deploy</button>
                 @endif
 
             </ul>
@@ -71,7 +67,7 @@
                         </tr>
                         <tr>
                             <td>Health Check URL</td>
-                            <td align="right">aaa</td>
+                            <td align="right">{{$day}}</td>
 
                         </tr>
                         </tbody>
@@ -146,7 +142,7 @@
                                     <td>{{ $deployment->committer }}</td>
                                     <td>{{ $deployment->commit }}</td>
                                     <td>{{ $deployment->status }}</td>
-                                    <td alight="right">Buttons here? </td>
+                                    <td alight="right"><button><i class="fa fa-key"></i></button></td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -165,42 +161,50 @@
                             <h4> Servers </h4>
                         </div>
                         <div class="col-md-offset-6 col-md-4 pullright">
-                            <button class="btn btn-primary pull-right header4-button" data-toggle="modal" data-target="#new-server-modal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Server </button>
-                            <button class="btn btn-primary pull-right header4-button" data-toggle="modal" data-target="#manage-environment-modal"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Manage Environment </button>
+                            <button class="btn btn-primary pull-right header4-button" data-toggle="modal" data-target="#new-server-modal" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Server </button>
+                            <button class="btn btn-primary pull-right header4-button" data-toggle="modal" data-target="#manage-environment-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Manage Environment </button>
                         </div>
                     </div>
                     <br>
                     @if ($servers->count() > 0)
+                        <form id="deployForm" method="POST" action="{{URL::to('deploy') }}">
+                            {!! csrf_field() !!}
+                            <input type="hidden" name="project_id" value="{{ $project->id }}">
 
-
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Connect As</th>
-                                <th>IP Address</th>
-                                <th>Recieves Code</th>
-                                <th>Connection Status</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($servers as $server)
+                            <table class="table">
+                                <thead>
                                 <tr>
-                                    <td> {{ $server->name}} </td>
-                                    <td> {{ $server->server_user}} </td>
-                                    <td> {{ $server->ip}} </td>
-                                    @if($server->receives_code)
-                                        <td><i class="fa fa-check"></i> Yes</td>
-                                    @else
-                                        <td><i class="fa fa-times"></i> No</td>
-                                    @endif
-                                    <td> {{ $server->connection_status}} </td>
-                                    <td alight="right">Buttons here? </td>
+                                    <th>Name</th>
+                                    <th>Connect As</th>
+                                    <th>IP Address</th>
+                                    <th>Recieves Code</th>
+                                    <th>Connection Status</th>
+                                    <th></th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                @foreach($servers as $server)
+                                    <input type="hidden" name="server_ids[]" value="{{$server->id}}">
+                                    <tr>
+                                        <td> {{ $server->name}} </td>
+                                        <td> {{ $server->server_user}} </td>
+                                        <td> {{ $server->ip}} </td>
+                                        @if($server->receives_code)
+                                            <td><i class="fa fa-check"></i> Yes</td>
+                                        @else
+                                            <td><i class="fa fa-times"></i> No</td>
+                                        @endif
+                                        <td> {{ $server->connection_status}} </td>
+                                        <td align="right">
+                                            <button class="btn btn-success"><i class="fa fa-pencil"></i></button>
+                                            <button class="btn btn-primary"><i class="fa fa-key"></i></button>
+                                            <button class="btn btn-danger"><i class="fa fa-remove"></i></button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </form>
                         {!! $servers->render() !!}
                     @else
                         <p>No servers have been assigned to this project</p>
@@ -310,4 +314,41 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+
+        $('#manage-environment-btn').on('click', function(){
+            swal("Good job!");
+        });
+
+        $('#deploy-btn').on('click', function(){
+            $(this).text("Working");
+            $(this).prepend('<i class="fa fa-spinner fa-pulse"></i> ' );
+            console.log($("#deployForm").serialize());
+            $.post(
+                "../deploy",
+                $( "#deployForm" ).serialize()
+            ).done(function( data ) {
+                console.log( "Done" );
+                $('#deploy-btn').text('Deployed!');
+                $('#deploy-btn').prepend('<i class="fa fa-check"></i> ');
+
+            });
+        });
+
+
+
+    });
+
+</script>
+
 @endsection
