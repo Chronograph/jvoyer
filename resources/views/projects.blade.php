@@ -62,7 +62,7 @@
                 <tbody>
                     @foreach($projects as $project)
                     <tr>
-                        <td>{{ $project->name }}</td>
+                        <td>{{ $project->name . "  " . $project->repo_provider}}</td>
                         @if($project->repo_provider == 'github')
                             <td><i class="fa fa-github" aria-hidden="true"></i> {{ $project->repository }}</td>
                         @elseif($project->repo_provider == 'bitbucket')

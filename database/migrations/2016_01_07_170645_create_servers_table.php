@@ -20,6 +20,7 @@ class CreateServersTable extends Migration
 	        $table->string('ip');
 	        $table->string('server_user');
 	        $table->string('connection_status');
+	        $table->integer('keep_releases');
 	        $table->string('path');
 	        $table->boolean('receives_code');
             $table->timestamps();

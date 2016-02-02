@@ -10,6 +10,7 @@ use Auth;
 use App\User;
 use App\Project;
 use App\Server;
+use App\Deployment;
 use App\Jobs\DeployJob;
 use Carbon\Carbon;
 
@@ -57,12 +58,18 @@ class ProjectController extends Controller
 		$user = Auth::user();
 		$project = Project::find($request->input('project_id'));
 		$server_ids = $request->input('server_ids');
-		for($i = 0; $i < sizeof($server_ids) ; $i++){
+		for($i = 0 ; $i < sizeof($server_ids) ; $i++){
+			$deployment = new Deployment;
 			$server = Server::find($server_ids[$i]);
-			$this->dispatch(new DeployJob($project, $server));
+			$deployment->project_id = $project->id;
+			$deployment->server_id = $server->id;
+			$deployment->committer = $user->name;
+			$deployment->save();
+
+			$this->dispatch(new DeployJob($project, $server, $deployment));
 		}
 
-		return('OK!');
+		return("ok");
 
 	}
 
@@ -79,6 +86,7 @@ class ProjectController extends Controller
 	    $project = new Project;
 	    $project->name = $request->input('name');
 	    $project->repository = $request->input('repo');
+	    $project->repo_provider = $request->input('provider');
 	    $project->user_id = $user->id;
 
 	    $project->save();

@@ -22,9 +22,17 @@ class CreateDeploymentsTable extends Migration
 	        $table->string('commit');
 	        $table->string('status');
 	        $table->text('clone_log');
+	        $table->timestamp('clone_start');
+	        $table->timestamp('clone_done');
 	        $table->text('composer_log');
+	        $table->timestamp('composer_start');
+	        $table->timestamp('composer_done');
 	        $table->text('activate_log');
+	        $table->timestamp('activate_start');
+	        $table->timestamp('activate_done');
 	        $table->text('purge_log');
+	        $table->timestamp('purge_start');
+	        $table->timestamp('purge_done');
             $table->timestamps();
         });
     }
