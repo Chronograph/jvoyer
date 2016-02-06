@@ -64,8 +64,7 @@ class DeployJob extends Job implements SelfHandling, ShouldQueue
 
 	public function composerDependencies()
 	{
-		$tmp = explode("/",$this->project->repository);
-		$project_name = $tmp[sizeof($tmp) - 1];
+
 		$this->deployment->composer_start = new Carbon();
 		$this->deployment->save();
 		exec('cd .. ; /home/vagrant/.composer/vendor/bin/envoy run composer'
@@ -89,8 +88,7 @@ class DeployJob extends Job implements SelfHandling, ShouldQueue
 
 	public function activateRelease()
 	{
-		$tmp = explode("/",$this->project->repository);
-		$project_name = $tmp[sizeof($tmp) - 1];
+
 		$this->deployment->activate_start = new Carbon();
 		$this->deployment->save();
 		exec('cd .. ; /home/vagrant/.composer/vendor/bin/envoy run activate'
@@ -108,14 +106,14 @@ class DeployJob extends Job implements SelfHandling, ShouldQueue
 
 		$this->deployment->activate_log = implode('\n',$res);
 		$this->deployment->activate_done = new Carbon();
+		$this->deployment->status = 'Complete';
 
 		$this->deployment->save();
 	}
 
 	public function purgeRelease()
 	{
-		$tmp = explode("/",$this->project->repository);
-		$project_name = $tmp[sizeof($tmp) - 1];
+
 		$this->deployment->purge_start = new Carbon();
 		$this->deployment->save();
 		exec('cd .. ; /home/vagrant/.composer/vendor/bin/envoy run purgereleases'
@@ -133,7 +131,26 @@ class DeployJob extends Job implements SelfHandling, ShouldQueue
 
 		$this->deployment->purge_log = implode('\n',$res);
 		$this->deployment->purge_done = new Carbon();
+		//$this->deployment->status = $ret;
 
+		$this->deployment->save();
+	}
+
+	public function getCommit(){
+		exec('cd .. ; /home/vagrant/.composer/vendor/bin/envoy run gethash'
+			. ' --ip=' . $this->server->ip
+			. ' --path=' . $this->server->path
+			. ' --user=' . $this->server->server_user
+			. ' --time='  . $this->deployment->created_at->format("YmdHis"),
+			$res, $ret);
+
+		foreach($res as &$line) {
+			if (strpos($line, ']') !== false) {
+				$line = substr($line, strpos($line, ']') + 3 );
+			}
+		}
+
+		$this->deployment->commit = implode('',$res);
 		$this->deployment->save();
 	}
 
@@ -147,7 +164,8 @@ class DeployJob extends Job implements SelfHandling, ShouldQueue
 		$this->deployment->status = 'Running';
 		$this->deployment->save();
 		$this->cloneReleases();
-		$this->composerDependencies();
+		$this->getCommit();
+		//$this->composerDependencies();
 		$this->activateRelease();
 		//$this->purgeRelease();
 

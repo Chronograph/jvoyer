@@ -19,6 +19,7 @@ class CreateProjectsTable extends Migration
 	        $table->string('name');
 	        $table->string('repo_provider');
 	        $table->string('repository');
+	        $table->string('branch');
 
             $table->timestamps();
         });

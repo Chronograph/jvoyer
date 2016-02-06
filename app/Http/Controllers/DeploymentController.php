@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Server;
 
-class ServerController extends Controller
+class DeploymentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,24 +37,7 @@ class ServerController extends Controller
      */
     public function store(Request $request)
     {
-
-	    $server = new Server;
-	    $server->project_id = $request->input('project_id');
-	    $server->name = $request->input('name');
-	    $server->ip = $request->input('ip');
-	    $server->server_user = $request->input('user');
-	    $server->path = $request->input('path');
-	    $server->keep_releases = 5;
-	    $server->connection_status = "Unknown";
-
-	    $checked = (null !== $request->input('receives'));
-
-	    $server->receives_code = $checked;
-
-	    $server->save();
-
-
-	    return redirect()->action('ProjectController@show',['id' => $server->project_id]);
+        //
     }
 
     /**

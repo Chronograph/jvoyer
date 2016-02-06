@@ -138,11 +138,13 @@
                             <tbody>
                             @foreach($deployments as $deployment)
                                 <tr>
-                                    <td>{{ $deployment->id }}</td>
+                                    <td>{{ $deployment->created_at->format('M jS, g:i A') }}</td>
                                     <td>{{ $deployment->committer }}</td>
                                     <td>{{ $deployment->commit }}</td>
                                     <td>{{ $deployment->status }}</td>
-                                    <td alight="right"><button><i class="fa fa-key"></i></button></td>
+                                    <td align="right">
+                                        <button class="btn btn-primary"><i class="fa fa-long-arrow-right" onclick="location.href= '{{ URL::to('deployments/' . $project->id) }}';"> </i> </button>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>

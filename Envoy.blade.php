@@ -38,25 +38,34 @@
 @endtask
 
 @task('purgereleases')
+    set -n
     echo '--  Starting  --'
     cd {{ $path }}
+    cd releases
     count=0
     keep={{ $keep }}
-
-    for d in */ ; do
+    echo $keep
+    echo $count
+    for d in */
+    do
+        echo $d
         ((count++))
     done
-    echo 'Found $count total release directories'
+
+    echo 'Found '$count' total release directories'
+
     if [ $count -gt $keep ]; then
         echo 'Purging old directories'
         echo 'Keeping newest $keep releases'
     fi
+
     for d in */ ; do
         if [ $count -gt $keep ]; then
             rm -r $d
             ((count--))
         fi
     done
+
     echo '--  Complete  --'
 @endtask
 
@@ -80,4 +89,12 @@
     echo 'Running a composer install'
     composer install
     echo '--  Complete  --'
+@endtask
+
+@task('gethash')
+    cd {{ $path }}
+    cd releases
+    cd {{ $time }}
+    git log --pretty=format:'%h' -n 1
+
 @endtask
